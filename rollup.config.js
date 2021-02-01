@@ -6,6 +6,9 @@ import { terser } from "rollup-plugin-terser";
 import sveltePreprocess from "svelte-preprocess";
 import typescript from "@rollup/plugin-typescript";
 import css from "rollup-plugin-css-only";
+import replace from "@rollup/plugin-replace";
+import dotenv from "dotenv";
+dotenv.config();
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -80,6 +83,11 @@ export default {
     // If we're building for production (npm run build
     // instead of npm run dev), minify
     production && terser(),
+
+    // Environment variables from .env
+    replace({
+      __GOOGLE_MAPS_API_KEY__: process.env.GOOGLE_MAPS_API_KEY,
+    }),
   ],
   watch: {
     clearScreen: false,
