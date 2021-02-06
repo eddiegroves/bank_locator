@@ -25,9 +25,3 @@
 {#if $googleMapsScriptError.hasError}
   <code>There is an issue loading Google Maps script</code>
 {/if}
-
-{#if $isGoogleMapsScriptLoaded}
-  <div>
-    <code>Google Maps script has loaded</code>
-  </div>
-{/if}
