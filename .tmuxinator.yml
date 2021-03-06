@@ -1,0 +1,14 @@
+# ./.tmuxinator.yml
+
+name: eddie/bank_locator
+root: ./
+on_project_start:
+  - open http://localhost:5000
+  - code .
+
+windows:
+  - terminal:
+      layout: main-vertical
+      panes:
+        - 
+        - npm run dev 
