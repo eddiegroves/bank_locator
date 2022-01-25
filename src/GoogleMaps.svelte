@@ -35,31 +35,29 @@
 
   locations.subscribe((locations) => {
     mapMarkers.update((markers) => {
-      const existingMarkers = markers.filter((marker) =>
-        locations.some(({ position }) => position.equals(marker.position))
-      );
+      const existingMarkers = markers.filter((marker) => locations.has(marker));
 
-      const updateMarkers: MapMarker[] = locations.map((location) => {
+      const updateMarkers: MapMarker[] = [];
+      for (const [{ position }, location] of locations) {
         const existingMarker = existingMarkers.find((marker) =>
-          marker.position.equals(location.position)
+          marker.position.equals(position)
         );
         if (existingMarker) {
-          return existingMarker;
+          continue;
         }
 
-        return {
+        updateMarkers.push({
           marker: new google.maps.Marker({
-            position: location.position,
+            position,
             title: location.address1,
           }),
           onMap: false,
-          position: location.position,
-        };
-      });
+          position,
+        });
+      }
 
       const staleMarkers = markers.filter(
-        (marker) =>
-          !locations.some(({ position }) => position.equals(marker.position))
+        ({ position }) => !locations.has({ position })
       );
 
       mapMarkersPendingDelete.set(
